@@ -9,6 +9,16 @@
   adminSearch: ""
 };
 
+const API_BASE_STORAGE_KEY = "vmc_api_base";
+const apiBaseFromQuery = new URLSearchParams(window.location.search).get("apiBase");
+const apiBaseFromStorage = localStorage.getItem(API_BASE_STORAGE_KEY) || "";
+const API_BASE_URL = normalizeApiBase(apiBaseFromQuery ?? apiBaseFromStorage ?? "");
+
+if (apiBaseFromQuery !== null) {
+  if (API_BASE_URL) localStorage.setItem(API_BASE_STORAGE_KEY, API_BASE_URL);
+  else localStorage.removeItem(API_BASE_STORAGE_KEY);
+}
+
 const authView = document.getElementById("authView");
 const dashboardView = document.getElementById("dashboardView");
 const dashboardContent = document.getElementById("dashboardContent");
@@ -376,7 +386,7 @@ function assertFields(fields) {
 }
 
 async function api(path, options = {}) {
-  const response = await fetch(path, {
+  const response = await fetch(resolveApiUrl(path), {
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -387,6 +397,18 @@ async function api(path, options = {}) {
   const data = await response.json();
   if (!response.ok) throw new Error(data.error || "Ошибка запроса");
   return data;
+}
+
+function normalizeApiBase(value) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) return "";
+  return trimmed.replace(/\/+$/, "");
+}
+
+function resolveApiUrl(path) {
+  if (/^https?:\/\//i.test(path)) return path;
+  const normalizedPath = String(path || "").startsWith("/") ? path : `/${path}`;
+  return API_BASE_URL ? `${API_BASE_URL}${normalizedPath}` : normalizedPath;
 }
 
 async function handleLogin(event) {

@@ -11,6 +11,10 @@ const DATABASE_URL = process.env.DATABASE_URL || "mongodb://127.0.0.1:27017";
 const DATABASE_NAME = process.env.DATABASE_NAME || "simme";
 const COLLECTION_NAME = "app_state";
 const APP_STATE_KEY = "main";
+const ALLOWED_CORS_ORIGINS = String(process.env.CORS_ORIGINS || "https://carto0n0.github.io,http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 const mongoClient = new MongoClient(DATABASE_URL);
 
@@ -531,6 +535,19 @@ function sendJson(res, statusCode, data) {
 function sendText(res, statusCode, text) {
   res.writeHead(statusCode, { "Content-Type": "text/plain; charset=utf-8" });
   res.end(text);
+}
+
+function applyCors(req, res) {
+  const requestOrigin = String(req.headers.origin || "").trim();
+  const allowAll = ALLOWED_CORS_ORIGINS.includes("*");
+  if (allowAll) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  } else if (requestOrigin && ALLOWED_CORS_ORIGINS.includes(requestOrigin)) {
+    res.setHeader("Access-Control-Allow-Origin", requestOrigin);
+    res.setHeader("Vary", "Origin");
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 }
 
 function parseBody(req) {
@@ -1105,6 +1122,12 @@ async function handleApi(req, res) {
 
 const server = http.createServer(async (req, res) => {
   try {
+    applyCors(req, res);
+    if (req.method === "OPTIONS") {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
     if (req.url.startsWith("/api/")) return await handleApi(req, res);
     serveStatic(req, res);
   } catch (error) {

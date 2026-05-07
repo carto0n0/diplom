@@ -27,9 +27,37 @@
 DATABASE_URL=mongodb://127.0.0.1:27017
 DATABASE_NAME=simme
 PORT=3000
+CORS_ORIGINS=https://your-username.github.io
 ```
 
 См. [.env.example](/D:/new/.env.example).
+
+## GitHub Pages -> локальный API
+
+Чтобы страница на GitHub Pages обращалась к вашему локальному Node.js, нужен туннель до `localhost`.
+
+1. Запустите сервер:
+
+```powershell
+cd D:\new
+npm start
+```
+
+2. Поднимите туннель (пример с localtunnel):
+
+```powershell
+npx localtunnel --port 3000
+```
+
+3. В `.env` укажите домен GitHub Pages в `CORS_ORIGINS` и перезапустите сервер.
+
+4. Откройте GitHub Pages с параметром `apiBase`, например:
+
+```text
+https://your-username.github.io/your-repo/?apiBase=https://your-subdomain.loca.lt
+```
+
+Фронтенд сохранит `apiBase` в `localStorage` и будет использовать его для всех запросов `/api/*`.
 
 ## Установка
 
