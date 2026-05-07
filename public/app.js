@@ -12,7 +12,8 @@
 const API_BASE_STORAGE_KEY = "vmc_api_base";
 const apiBaseFromQuery = new URLSearchParams(window.location.search).get("apiBase");
 const apiBaseFromStorage = localStorage.getItem(API_BASE_STORAGE_KEY) || "";
-const API_BASE_URL = normalizeApiBase(apiBaseFromQuery ?? apiBaseFromStorage ?? "");
+const defaultApiBase = window.location.hostname.endsWith("github.io") ? "http://localhost:5000" : "";
+const API_BASE_URL = normalizeApiBase(apiBaseFromQuery ?? apiBaseFromStorage ?? defaultApiBase);
 
 if (apiBaseFromQuery !== null) {
   if (API_BASE_URL) localStorage.setItem(API_BASE_STORAGE_KEY, API_BASE_URL);
@@ -198,8 +199,9 @@ function handleValidatedKeydown(event) {
   const target = event.target;
   if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return;
   const rule = getFieldRule(target.name || target.id || "");
-  if (!rule || event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) return;
-  const nextValue = buildNextInputValue(target, event.key);
+  const key = typeof event.key === "string" ? event.key : "";
+  if (!rule || event.ctrlKey || event.metaKey || event.altKey || key.length !== 1) return;
+  const nextValue = buildNextInputValue(target, key);
   if (sanitizeValue(nextValue, rule) !== nextValue) event.preventDefault();
 }
 
