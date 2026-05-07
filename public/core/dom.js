@@ -1,0 +1,14 @@
+export const authView = document.getElementById("authView");
+export const dashboardView = document.getElementById("dashboardView");
+export const dashboardContent = document.getElementById("dashboardContent");
+export const sidebarTabs = document.getElementById("sidebarTabs");
+export const flashMessage = document.getElementById("flashMessage");
+export const loginForm = document.getElementById("loginForm");
+export const registerForm = document.getElementById("registerForm");
+export const roleBadge = document.getElementById("roleBadge");
+export const welcomeTitle = document.getElementById("welcomeTitle");
+export const modalRoot = document.getElementById("modalRoot");
+export const modalEyebrow = document.getElementById("modalEyebrow");
+export const modalTitle = document.getElementById("modalTitle");
+export const modalBody = document.getElementById("modalBody");
+export const toastStack = document.getElementById("toastStack");
