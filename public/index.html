@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simme</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="toastStack" class="toast-stack"></div>
+
+    <section id="authView" class="auth-screen">
+      <div class="auth-card">
+        <div class="auth-top">
+          <div>
+            <p class="eyebrow">Simme</p>
+            <h1>Личные кабинеты мобильного оператора</h1>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-button active" data-tab="login" type="button">Вход</button>
+          <button class="tab-button" data-tab="register" type="button">Регистрация</button>
+        </div>
+
+        <div id="flashMessage" class="flash hidden"></div>
+
+        <form id="loginForm" class="form-grid">
+          <div class="field">
+            <label for="loginEmail">Email</label>
+            <input id="loginEmail" name="email" type="email" placeholder="client@demo.by" required />
+          </div>
+          <div class="field">
+            <label for="loginPassword">Пароль</label>
+            <input id="loginPassword" name="password" type="password" placeholder="Введите пароль" required />
+          </div>
+          <label class="checkbox">
+            <input id="rememberPassword" type="checkbox" />
+            <span>Сохранить пароль для быстрого входа</span>
+          </label>
+          <button class="primary-button" type="submit">Войти</button>
+          <div class="demo-box">
+            <p><strong>Клиент:</strong> client@demo.by / client123</p>
+            <p><strong>Администратор:</strong> admin@demo.by / admin123</p>
+          </div>
+        </form>
+
+        <form id="registerForm" class="form-grid hidden">
+          <div class="field">
+            <label for="regName">ФИО</label>
+            <input id="regName" name="fullName" type="text" required />
+          </div>
+          <div class="field">
+            <label for="regEmail">Email</label>
+            <input id="regEmail" name="email" type="email" required />
+          </div>
+          <div class="field">
+            <label for="regPassword">Пароль</label>
+            <input id="regPassword" name="password" type="password" required />
+          </div>
+          <div class="field">
+            <label for="regPassport">Паспорт</label>
+            <input id="regPassport" name="passportId" type="text" />
+          </div>
+          <div class="field">
+            <label for="regBirth">Дата рождения</label>
+            <input id="regBirth" name="birthDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="regAddress">Адрес</label>
+            <input id="regAddress" name="address" type="text" />
+          </div>
+          <button class="primary-button" type="submit">Зарегистрироваться и получить номер</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="dashboardView" class="dashboard-shell hidden">
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="brand-mark">SM</div>
+          <div>
+            <p id="roleBadge" class="eyebrow"></p>
+            <h2 id="welcomeTitle"></h2>
+          </div>
+        </div>
+        <nav id="sidebarTabs" class="sidebar-nav"></nav>
+        <div class="sidebar-bottom">
+          <button id="themeToggle" class="ghost-button sidebar-button" type="button">Сменить тему</button>
+          <button id="refreshButton" class="ghost-button sidebar-button" type="button">Обновить</button>
+          <button id="logoutButton" class="ghost-button sidebar-button danger-button" type="button">Выйти</button>
+        </div>
+      </aside>
+      <main class="dashboard-main">
+        <div id="dashboardContent"></div>
+      </main>
+    </section>
+
+    <div id="modalRoot" class="modal-root hidden">
+      <div class="modal-backdrop" data-close-modal="true"></div>
+      <div class="modal-card">
+        <div class="modal-header">
+          <div>
+            <p id="modalEyebrow" class="eyebrow"></p>
+            <h3 id="modalTitle"></h3>
+          </div>
+          <button id="modalCloseButton" class="ghost-button" type="button">Закрыть</button>
+        </div>
+        <div id="modalBody" class="modal-body"></div>
+      </div>
+    </div>
+
+    <template id="statCardTemplate">
+      <article class="stat-card">
+        <p class="stat-label"></p>
+        <strong class="stat-value"></strong>
+        <span class="stat-note"></span>
+      </article>
+    </template>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

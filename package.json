@@ -1,0 +1,12 @@
+{
+  "name": "mobile-support-diploma",
+  "version": "1.0.0",
+  "description": "Diploma web application for mobile operator subscriber support",
+  "main": "server.js",
+  "dependencies": {
+    "mongodb": "^6.7.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
