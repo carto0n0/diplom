@@ -137,7 +137,7 @@ export function createDashboardRenderer({
                 <div class="section-header"><div><h3>Пополнение банковской картой</h3><p class="helper-text">Введите данные карты для демонстрационного платежа.</p></div></div>
                 <form id="cardTopupForm" class="form-grid">
                   <div class="field"><label for="topupAmount">Сумма, BYN</label><input id="topupAmount" name="amount" type="number" min="3" step="0.1" required /></div>
-                  <div class="field"><label for="cardNumber">Номер карты</label><input id="cardNumber" name="cardNumber" type="text" placeholder="0000 0000 0000 0000" required /></div>
+                  <div class="field"><label for="cardNumber">Номер карты</label><input id="cardNumber" name="cardNumber" type="text" placeholder="0000000000000000" required /></div>
                   <div class="field"><label for="cardHolder">Держатель карты</label><input id="cardHolder" name="cardHolder" type="text" placeholder="IVAN IVANOV" required /></div>
                   <div class="grid-two">
                     <div class="field"><label for="cardExpiry">Срок действия</label><input id="cardExpiry" name="expiry" type="text" placeholder="12/28" required /></div>

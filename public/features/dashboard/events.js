@@ -140,10 +140,10 @@ export function createDashboardEvents({
         payload.method = "card";
         payload.amount = Number(payload.amount);
         if (payload.amount < 3) throw new Error("Минимальная сумма оплаты картой составляет 3 BYN.");
-        const result = await apiAction("/api/client/topup", payload, "Платёж выполнен", "Баланс успешно пополнен с карты.");
+        const result = await apiAction("/api/client/topup", payload, "Платёж выполнен", "Баланс успешно пополнен с карты.", { silentErrors: true });
         if (result) event.currentTarget.reset();
       } catch (error) {
-        showToast("Ошибка", error.message, "error");
+        console.warn(error);
       }
     });
 
@@ -154,10 +154,14 @@ export function createDashboardEvents({
         assertFields([{ name: "amount", value: payload.amount, required: true }]);
         payload.method = "promised-payment";
         payload.amount = Number(payload.amount);
-        const result = await apiAction("/api/client/topup", payload, "Обещанный платёж активирован", "Средства временно зачислены на баланс.");
+        if (payload.amount > 25) {
+          showToast("Предупреждение", "Обещанный платёж максимум 25 рублей.", "warning");
+          return;
+        }
+        const result = await apiAction("/api/client/topup", payload, "Обещанный платёж активирован", "Средства временно зачислены на баланс.", { silentErrors: true });
         if (result) event.currentTarget.reset();
       } catch (error) {
-        showToast("Ошибка", error.message, "error");
+        console.warn(error);
       }
     });
 
@@ -169,10 +173,10 @@ export function createDashboardEvents({
           { name: "topic", value: payload.topic, required: true },
           { name: "message", value: payload.message, required: true }
         ]);
-        const result = await apiAction("/api/client/support", payload, "Обращение отправлено", "Заявка создана и передана в поддержку.");
+        const result = await apiAction("/api/client/support", payload, "Обращение отправлено", "Заявка создана и передана в поддержку.", { silentErrors: true });
         if (result) event.currentTarget.reset();
       } catch (error) {
-        showToast("Ошибка", error.message, "error");
+        console.warn(error);
       }
     });
 

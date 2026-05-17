@@ -28,7 +28,12 @@ export function handleValidatedKeydown(event) {
   const key = typeof event.key === "string" ? event.key : "";
   if (!rule || event.ctrlKey || event.metaKey || event.altKey || key.length !== 1) return;
   const nextValue = buildNextInputValue(target, key);
-  if (sanitizeValue(nextValue, rule) !== nextValue) event.preventDefault();
+  const sanitizedNext = sanitizeValue(nextValue, rule);
+  if (sanitizedNext === nextValue) return;
+  const currentValue = target.value || "";
+  const sanitizedCurrent = sanitizeValue(currentValue, rule);
+  const sanitizedKey = sanitizeValue(key, rule);
+  if (!sanitizedKey || sanitizedNext === sanitizedCurrent) event.preventDefault();
 }
 
 export function handleValidatedPaste(event) {
@@ -66,7 +71,7 @@ export function validateFieldValue(fieldName, value, required = false) {
     cardNumber: () => /^\d{16}$/.test(text.replace(/\s/g, "")) ? null : "Номер карты должен содержать 16 цифр.",
     cardHolder: () => /^[A-Z ]{4,40}$/.test(text) ? null : "Имя держателя карты должно быть на латинице.",
     expiry: () => /^(0[1-9]|1[0-2])\/\d{2}$/.test(text) ? null : "Срок действия укажите в формате MM/YY.",
-    cvv: () => /^\d{3}$/.test(text) ? null : "CVV должен содержать 3 цифры.",
+    cvv: () => /^\d{3,4}$/.test(text) ? null : "CVV должен содержать 3 или 4 цифры.",
     amount: () => /^\d+(\.\d{1,2})?$/.test(text) ? null : "Введите корректную сумму.",
     balance: () => /^-?\d+(\.\d{1,2})?$/.test(text) ? null : "Введите корректный баланс."
   };

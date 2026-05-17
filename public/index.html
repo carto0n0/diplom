@@ -36,7 +36,10 @@
           </div>
           <div class="field">
             <label for="loginPassword">Пароль</label>
-            <input id="loginPassword" name="password" type="password" placeholder="Введите пароль" required />
+            <div class="password-field">
+              <input id="loginPassword" name="password" type="password" placeholder="Введите пароль" required />
+              <button id="toggleLoginPassword" class="ghost-button password-toggle" type="button">Показать</button>
+            </div>
           </div>
           <label class="checkbox">
             <input id="rememberPassword" type="checkbox" />
@@ -68,7 +71,7 @@
           </div>
           <div class="field">
             <label for="regBirth">Дата рождения</label>
-            <input id="regBirth" name="birthDate" type="date" />
+            <input id="regBirth" name="birthDate" type="text" inputmode="numeric" placeholder="ГГГГ-ММ-ДД" />
           </div>
           <div class="field">
             <label for="regAddress">Адрес</label>

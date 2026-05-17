@@ -101,6 +101,13 @@ document.querySelectorAll(".tab-button").forEach((button) => {
   button.addEventListener("click", () => switchAuthTab(button.dataset.tab));
 });
 document.getElementById("themeToggle").addEventListener("click", handleThemeToggle);
+document.getElementById("toggleLoginPassword")?.addEventListener("click", (event) => {
+  const passwordInput = document.getElementById("loginPassword");
+  if (!passwordInput) return;
+  const nextType = passwordInput.type === "password" ? "text" : "password";
+  passwordInput.type = nextType;
+  event.currentTarget.textContent = nextType === "password" ? "Показать" : "Скрыть";
+});
 document.getElementById("logoutButton").addEventListener("click", logout);
 document.getElementById("refreshButton").addEventListener("click", fetchProfile);
 document.getElementById("modalCloseButton").addEventListener("click", closeModal);
@@ -118,8 +125,8 @@ async function handleLogin(event) { return authHandlers.handleLogin(event); }
 async function handleRegister(event) { return authHandlers.handleRegister(event); }
 async function logout() { return authHandlers.logout(); }
 async function fetchProfile() { return authHandlers.fetchProfile(); }
-async function apiAction(path, payload, successTitle, successText) {
-  return authHandlers.apiAction(path, payload, successTitle, successText);
+async function apiAction(path, payload, successTitle, successText, options) {
+  return authHandlers.apiAction(path, payload, successTitle, successText, options);
 }
 
 function renderDashboard() {

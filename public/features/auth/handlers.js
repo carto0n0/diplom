@@ -92,14 +92,20 @@ export function createAuthHandlers({
     }
   }
 
-  async function apiAction(path, payload, successTitle, successText) {
+  async function apiAction(path, payload, successTitle, successText, options = {}) {
     try {
       const data = await api(path, { method: "POST", body: JSON.stringify(payload) });
-      await fetchProfile();
+      if (data?.user) {
+        state.user = data.user;
+        if (data.meta) state.meta = data.meta;
+        renderDashboard();
+      } else {
+        await fetchProfile();
+      }
       showToast(successTitle, successText);
       return data;
     } catch (error) {
-      showToast("Ошибка", error.message, "error");
+      if (!options.silentErrors) showToast("Ошибка", error.message, "error");
       return null;
     }
   }

@@ -588,7 +588,7 @@ const patterns = {
   message: /^[^<>]{5,300}$/,
   cardNumber: /^\d{16}$/,
   cardHolder: /^[A-Z ]{4,40}$/,
-  cvv: /^\d{3}$/,
+  expiry: /^(0[1-9]|1[0-2])\/\d{2}$/,
   cvv: /^\d{3,4}$/,
   amount: /^\d+(\.\d{1,2})?$/,
   balance: /^-?\d+(\.\d{1,2})?$/
@@ -886,10 +886,10 @@ async function handleApi(req, res) {
       if (method === "card") {
         if (amount < 3) return sendJson(res, 400, { error: "Минимальная сумма оплаты картой составляет 3 BYN." });
         const cardNumber = String(body.cardNumber || "").replace(/\s+/g, "");
-        const cardHolder = String(body.cardHolder || "").trim();
+        const cardHolder = String(body.cardHolder || "").trim().toUpperCase();
         const expiry = String(body.expiry || "").trim();
         const cvv = String(body.cvv || "").trim();
-        if (!matches(cardNumber, patterns.cardNumber) || !matches(cardHolder, patterns.cardHolder) || !matches(expiry, patterns.expiry) || !/^\d{3}$/.test(cvv)) {
+        if (!matches(cardNumber, patterns.cardNumber) || !matches(cardHolder, patterns.cardHolder) || !matches(expiry, patterns.expiry) || !matches(cvv, patterns.cvv)) {
           return sendJson(res, 400, { error: "Заполните данные банковской карты." });
         }
         sessionUser.balance = Number(sessionUser.balance || 0) + amount;

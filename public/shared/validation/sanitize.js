@@ -8,7 +8,7 @@ export function sanitizeValue(value, rule) {
     case "password":
       return source.slice(0, 24);
     case "passport":
-      return source.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 9);
+      return formatPassport(source);
     case "date":
       return source.replace(/[^\d-]/g, "").slice(0, 10);
     case "address":
@@ -21,7 +21,7 @@ export function sanitizeValue(value, rule) {
     case "cardNumber":
       return formatCardNumber(source);
     case "cardHolder":
-      return source.toUpperCase().replace(/[^A-Z\s]/g, "").slice(0, 40);
+      return source.toUpperCase().replace(/[^A-Z ]/g, "").replace(/ {2,}/g, " ").slice(0, 40);
     case "expiry":
       return formatExpiry(source);
     case "cvv":
@@ -38,7 +38,20 @@ export function sanitizeValue(value, rule) {
 }
 
 export function formatCardNumber(value) {
-  return value.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
+  return value.replace(/\D/g, "").slice(0, 16);
+}
+
+export function formatPassport(value) {
+  let letters = "";
+  let digits = "";
+  for (const char of String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "")) {
+    if (letters.length < 2) {
+      if (/[A-Z]/.test(char)) letters += char;
+    } else if (/\d/.test(char)) {
+      digits += char;
+    }
+  }
+  return `${letters}${digits.slice(0, 7)}`;
 }
 
 export function formatExpiry(value) {
